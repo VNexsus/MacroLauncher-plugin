@@ -1,4 +1,4 @@
-## Плагин замены шрифтов в презентациях в редакторах Р7-Офис
+## Плагин для вызова макросов из верхней панели редакторах Р7-Офис
 Плагин позволяет создавать кнопки в верхней панели для вызова макросов в документе.
 
 <img alt="Preview" width="590px" src="https://github.com/VNexsus/MacroLauncher-plugin/blob/main/Preview.png">
@@ -16,4 +16,5 @@
 ## Использованные компоненты
 * JQuery <a href="https://github.com/jquery/jquery">(GitHub)</a>
 * select2 <a href="https://github.com/select2/select2">(GitHub)</a>
+
 
