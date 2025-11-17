@@ -1,0 +1,20 @@
+{
+    "name" : "Назначить макрос",
+    "guid" : "asc.{-1}",
+    "variations" : [
+        {
+            "url"         : "dialog.html",
+            "icons": [ "resources/img/icon.png", "resources/img/icon@2x.png" ],
+            "isViewer"        : true,
+            "EditorsSupport"  : ["word","cell","slide"],
+            "isVisual"        : true,
+            "isModal"         : true,
+            "isInsideMode"    : false,
+            "initDataType"    : "",
+            "initData"        : "",
+            "isUpdateOleOnResize" : false,
+			"size"			  : [ 0, 0 ],
+            "buttons"         : [ ]
+        }
+    ]
+}

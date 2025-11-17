@@ -1,0 +1,46 @@
+<!--
+ (c) Copyright VNexus 2025
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+ 
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<script type="text/javascript" src="../vendor/jQuery/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript" src="../vendor/select2-4.0.6-rc.1/dist/js/select2.min.js"></script>
+		<script type="text/javascript" src="../../v1/plugins.js"></script>
+		<script type="text/javascript" src="../../v1/plugins-ui.js"></script>
+		<script type="text/javascript" src="../scripts/dialog.js"></script>
+		<script type="text/javascript" src="../scripts/storage.js"></script>
+		<link rel="stylesheet" href="../resources/css/plugins.css" />
+		<link rel="stylesheet" href="../resources/css/app.css" />
+		<link rel="stylesheet" href="../resources/css/custom.css" />
+		<link rel="stylesheet" href="../vendor/select2-4.0.6-rc.1/dist/css/select2.css"/>
+    </head>
+    <body>
+		<div class="wrap">
+			<div class="body" id="body" aria-hidden="true">
+				<div>Выберите макрос для добавления на панель:</div>
+				<div><select id="macroList" style="width: 100%" class="select2"></select></div>
+			</div>
+			<div class="footer">
+				<button class="btn normal dlg-btn primary" id="ok">OK</button>
+				<button class="btn normal dlg-btn" id="cancel">Отмена</button>
+			</div>
+		</div>
+	</body>
+</html>
