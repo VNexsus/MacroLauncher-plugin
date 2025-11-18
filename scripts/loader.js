@@ -28,6 +28,8 @@
 		var tlb = window.parent.DE || window.parent.PE || window.parent.SSE;
 		var editor = parent.editor || parent.Asc.editor;
 		if (tlb && editor) {
+			// detach hotkey check
+			parent.document.removeEventListener('keydown', window.Asc.plugin.checkHotkey, true);
 			var tab = $(parent.document).find('.ribtab[data-layout-name="toolbar-macro-launcher"]');
 			if(tab.length == 0){
 				tab = $(`
@@ -57,8 +59,11 @@
 				
 				var styles = `
 					.btn-add-macro-launch {background-image: url('`+ baseurl + `resources/img/add.svg')!important; background-size: contain!important;}
-					.btn-macro-launch {background-image: url('`+ baseurl + `resources/img/launch.svg')!important; background-size: contain!important;}
 				`;
+				for(var i = 1; i <= 43; i++) 
+					styles += `
+						.btn-macro-launch-`+ i +` {background-image: url('`+ baseurl + `resources/img/icons/icon`+ i +`.svg')!important; background-size: contain!important;}
+					`;
 				window.parent.$("section.box-panels").append(panel);
 				tlb.controllers.Toolbar.toolbar.$panels = parent.$('.panel');
 				panel.append(`<style>`+ styles +`</style>`);
@@ -72,7 +77,7 @@
 			if(macroText){
 				macroJSON = JSON.parse(macroText);
 				macroArray = macroJSON.macrosArray;
-				macroArray = macroArray.filter(el => storage.getList().includes(el.guid));
+				macroArray = macroArray.filter(el => storage.getList().some(m => m.guid === el.guid));
 				if(macroArray.length > 0 ) {
 					group = panel.find('#macro-launch-group');
 					if(group.length == 0){
@@ -83,31 +88,39 @@
 					else
 						group.empty();
 					macroArray.forEach( macro => {
-						if(storage.getList().includes(macro.guid)) {
-							btn = $(`<span id="btn-macro-launch-`+ macro.guid +`"></span>`);
-							group.append(btn);
-							var m = new parent.Common.UI.Menu({items: [{caption: "Выполнить макрос", value: "run"},{caption: "Удалить из панели", value: "remove"}]});
-							m.on("item:click", function(menu,item){
-								if(item.value == 'run')
-									window.Asc.plugin.runMacro(macro.guid)
-								if(item.value == 'remove')
-									window.Asc.plugin.removeMacro(macro.guid)
-							});
-							new parent.Common.UI.Button({
-								cls: "btn-toolbar x-huge icon-top",
-								iconCls: "btn-macro-launch",
-								disabled: false,
-								dataHint: "0",
-								caption: macro.name,
-								split: true,
-								menu: m
-							})
-							.render(panel.find('#btn-macro-launch-'+ macro.guid))
-							.on("click", function(){window.Asc.plugin.runMacro(macro.guid)});
-						}
+						var sm = storage.getList().find(el => el.guid === macro.guid);
+						btn = $(`<span id="btn-macro-launch-`+ macro.guid +`"></span>`);
+						group.append(btn);
+						var m = new parent.Common.UI.Menu({items: [{caption: "Выполнить макрос", value: "run"},{caption: "Удалить из панели", value: "remove"}]});
+						m.on("item:click", function(menu,item){
+							if(item.value == 'run')
+								window.Asc.plugin.runMacro(macro.guid)
+							if(item.value == 'remove')
+								window.Asc.plugin.removeMacro(macro.guid)
+						});
+						new parent.Common.UI.Button({
+							cls: "btn-toolbar x-huge icon-top",
+							iconCls: "btn-macro-launch-"+ (sm.style || 1) ,
+							disabled: false,
+							hint: macro.name + (sm.hotkey ? (' (' + (sm.hotkey.ctrl ? 'Ctrl+' : '') + (sm.hotkey.alt ? 'Alt+' : '') + getCharFromCode(sm.hotkey.key) + ')') : ''),
+							caption: macro.name,
+							split: true,
+							menu: m
+						})
+						.render(panel.find('#btn-macro-launch-'+ macro.guid))
+						.on("click", function(){window.Asc.plugin.runMacro(macro.guid)});
 					});
+					// attach hotkeys
+					parent.document.addEventListener('keydown', window.Asc.plugin.checkHotkey, true);
 				}
 			}
+		}
+	}
+
+	window.Asc.plugin.checkHotkey = function(evt) {
+		if(storage && (evt.ctrlKey ||  evt.altKey)) {
+			var sm = storage.getList().find(el => (el.hotkey && el.hotkey.ctrl == evt.ctrlKey && el.hotkey.alt == evt.altKey && el.hotkey.key === evt.keyCode))
+			if(sm) window.Asc.plugin.runMacro(sm.guid)
 		}
 	}
 	
@@ -120,7 +133,7 @@
 			isModal: true,
 			EditorsSupport: ['word','cell','slide'],
 			buttons: [],
-			size: [ 300, 150 ]
+			size: [ 310, 250 ]
 		});
 		var p = new parent.Asc.CPlugin();
 		p.set_Guid('asc.{-1}');

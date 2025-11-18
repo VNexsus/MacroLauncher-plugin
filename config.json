@@ -5,7 +5,7 @@
 			"en": "Macro Launcer"
 	},
     "guid" : "asc.{E5262E23-48E1-1D0C-073C-2AF8C610E1E0}",
-	"version": "2.0",
+	"version": "3.0",
     "variations" : [
         {
             "description" : "Панель для назначения вызова макросов",

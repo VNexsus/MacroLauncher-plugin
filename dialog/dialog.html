@@ -26,6 +26,7 @@
 		<script type="text/javascript" src="../../v1/plugins-ui.js"></script>
 		<script type="text/javascript" src="../scripts/dialog.js"></script>
 		<script type="text/javascript" src="../scripts/storage.js"></script>
+		<script type="text/javascript" src="../scripts/utils.js"></script>
 		<link rel="stylesheet" href="../resources/css/plugins.css" />
 		<link rel="stylesheet" href="../resources/css/app.css" />
 		<link rel="stylesheet" href="../resources/css/custom.css" />
@@ -34,8 +35,15 @@
     <body>
 		<div class="wrap">
 			<div class="body" id="body" aria-hidden="true">
-				<div>Выберите макрос для добавления на панель:</div>
+				<div>Выберите макрос для добавления:</div>
 				<div><select id="macroList" style="width: 100%" class="select2"></select></div>
+				<div style="margin-top: 10px">Выберите иконку для панели:</div>
+				<div class="icons"></div>
+				<div style="margin-top: 10px">Горячая клавиша для запуска (Ctrl/Alt +):</div>
+				<div style="position: relative;">
+					<div class="hotkey form-control" id="hotkey" tabindex="-1"></div>
+					<span class="clear" id="clear"></span>
+				</div>
 			</div>
 			<div class="footer">
 				<button class="btn normal dlg-btn primary" id="ok">OK</button>

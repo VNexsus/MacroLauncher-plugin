@@ -18,12 +18,15 @@
 
 (function(window, undefined){
 	
-	let baseurl = document.location.protocol == 'file:' ? 'file:///' + document.location.pathname.substring(0, document.location.pathname.lastIndexOf("/")).substring(1) + '/' : document.location.href.substring(0, document.location.href.lastIndexOf("/")+1);
-	let documentFilePath = parent.AscDesktopEditor.LocalFileGetSourcePath();
-	let storage = null;
+	var baseurl = document.location.protocol == 'file:' ? 'file:///' + document.location.pathname.substring(0, document.location.pathname.lastIndexOf("/")).substring(1) + '/' : document.location.href.substring(0, document.location.href.lastIndexOf("/")+1);
+	var documentFilePath = parent.AscDesktopEditor.LocalFileGetSourcePath();
+	var storage = null;
+	var icon_style = 1;
+	var hot_key = {};
 
     window.Asc.plugin.init = function() {
 		document.body.classList.add(window.Asc.plugin.getEditorTheme());
+		window.Asc.plugin.resizeWindow(310, 250, 310, 250, 500, 450);
 		
 		$('#ok').on('click', function(){window.Asc.plugin.button(0)});
 		$('#cancel').on('click', function(){window.Asc.plugin.button(1)});
@@ -35,12 +38,57 @@
 			if(macroText){
 				macroJSON = JSON.parse(macroText);
 				macroArray = macroJSON.macrosArray;
-				macroArray = macroArray.filter(el => !storage.getList().includes(el.guid));
+				macroArray = macroArray.filter(el => !storage.getList().some(m => m.guid === el.guid));
 				if(macroArray.length > 0 ) {
 					macroArray.forEach( macro => {
 						$('#macroList').append($('<option value="'+ macro.guid +'">'+ macro.name +'</option>'));
 					});
 					$('.select2').select2({dropdownParent: $('#body'), maximumSelectionLength: 3});
+					for(var i = 1; i <= 43; i++) {
+						var icon = $('<span class="icon"></div>');
+						icon.attr('data-style', i);
+						icon.css("background-image", "url('../resources/img/icons/icon"+ i +".svg')");
+						icon.on('click', function(){ $('.icon').removeClass('selected'); $(this).addClass('selected'); icon_style = $(this).attr('data-style'); });
+						$(".icons").append(icon);
+					}
+					$('.icon').first().click();
+					$('#hotkey').on('click', function(){$(this).focus()});
+					$('#hotkey').on('focus', function(){
+						if($(this).children().length == 0)
+							$(this).append($('<span class="stub">Нажмите комбинацию клавиш</span>'));
+					});
+					$('#hotkey').on('blur', function(){
+						$(this).find('.stub').remove();
+					});
+					$('#hotkey').on('keyup', function(e){e.preventDefault(); return false;});
+					$('#hotkey').on('keydown', function(e){
+						if(!e.altKey && !e.ctrlKey && e.keyCode == 27)
+							$('#clear').click();
+						if((e.altKey || e.ctrlKey) && e.keyCode && e.keyCode != 17 && e.keyCode != 18) {
+							$('#hotkey').empty();
+							if(e.ctrlKey) {
+								$('#hotkey').append($('<span class="key">Ctrl</span>'));
+								$('#hotkey').append($('<span>+</span>'));
+							}
+							if(e.altKey) {
+								$('#hotkey').append($('<span class="key">Alt</span>'));
+								$('#hotkey').append($('<span>+</span>'));
+							}
+							$('#hotkey').append($('<span class="key">'+ getCharFromCode(e.keyCode) +'</span>'));
+							hot_key.ctrl = e.ctrlKey;
+							hot_key.alt = e.altKey;
+							hot_key.key = e.keyCode;
+							$('#clear').show();
+						}
+						e.preventDefault();
+						return false;
+					});
+					$('#clear').on('click', function(){
+						$('#hotkey').empty();
+						hot_key = {};
+						$(this).hide();
+						$('#hotkey').focus();
+					});
 				}
 				else
 					window.Asc.plugin.noMacro();
@@ -58,8 +106,9 @@
 	}
 
 	window.Asc.plugin.button = function(id) {
-		if(id == 0)
-			storage.addMacro($('#macroList').val());
+		if(id == 0) {
+			storage.addMacro($('#macroList').val(), icon_style, hot_key);
+		}
 		this.executeCommand("close", "");
 	}
 

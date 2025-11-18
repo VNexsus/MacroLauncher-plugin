@@ -34,20 +34,18 @@ class MacroLauncherStorage {
 		return this.data[this.documentPath] || [];
 	}
 	
-	addMacro(id) {
+	addMacro(id, style, hotkey) {
 		var macroList = this.data[this.documentPath];
 		if(macroList) 
-			macroList.push(id);
+			macroList.push({guid: id, style: style, hotkey: hotkey});
 		else
-			this.data[this.documentPath] = [id];
+			this.data[this.documentPath] = [{guid: id, style: style, hotkey: hotkey}];
 		this.save();
 	}
 	
 	removeMacro(id) {
 		var macroList = this.data[this.documentPath] || [];
-		var index = macroList.indexOf(id);
-		if(index >= 0)
-			macroList.splice(index,1), this.save();
+		this.data[this.documentPath] = macroList.filter(el => el.guid !== id), this.save();
 	}
 	
 	save(){

@@ -21,7 +21,10 @@ body {
 
 .body {
 	flex: 1 0;
-	padding: 15px;
+	padding: 15px 15px 0;
+	display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .footer {
@@ -42,4 +45,113 @@ body {
 .stub {
     text-align: center;
     padding: 15px;
+}
+
+
+.icons {
+	display: block;
+	background: var(--background-normal);
+    border: 1px solid var(--border-regular-control);
+    border-radius: 2px;
+    flex: 1 0;
+    overflow: auto;	
+}
+
+.icon {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	margin: 4px;
+	background-size: contain!important;
+    background-repeat: no-repeat!important;
+    background-position: center!important;
+	border-radius: 3px;
+}
+
+.icon:hover:not(.selected) {
+	box-shadow: 0 0 2px 1px #3366f0;
+	cursor: pointer;
+}
+
+.icon.selected {
+	box-shadow: 0 0 1px 1px var(--text-normal);
+	background: var(--background-toolbar);
+}
+
+.hotkey {
+	padding: 1px 20px 1px 2px!important;
+	position: relative;
+	cursor: text;
+}
+
+.hotkey > * {
+    margin: 0;
+    padding: 1px 5px 0;
+    pointer-events: none;
+    display: inline-block;
+}
+
+.hotkey .stub {
+    font-size: 9px;
+	font-style: italic;
+    padding: 3px 5px;
+	animation: intro 2s infinite;
+}
+
+.key + .key {
+	margin-left: 3px;
+}
+
+.key {
+    background: var(--background-toolbar);
+    font-weight: 600;
+    font-size: 9px;
+    border-radius: 5px;
+    border: 1px solid var(--border-regular-control);
+    border-top: 1px solid var(--border-toolbar-button-hover);
+    border-left: 1px solid var(--border-toolbar-button-hover);
+}
+
+.clear {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  user-select: none;
+  z-index: 100;
+  display: none;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.clear:after, .clear:before {
+    content: ' ';
+    position: absolute;
+    left: 8px;
+    top: 1px;
+    top: var(--scaled-one-pixel,1px);
+    height: 12px;
+    width: 1px;
+    width: var(--scaled-one-pixel,1px);
+    background-color: var(--icon-normal);
+}
+
+.clear:before {
+    transform: rotate(45deg);
+}
+
+.clear:after {
+    transform: rotate(-45deg);
+}
+
+@keyframes intro {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0
+	}
 }
