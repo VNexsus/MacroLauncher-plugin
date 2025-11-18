@@ -102,7 +102,7 @@
 							cls: "btn-toolbar x-huge icon-top",
 							iconCls: "btn-macro-launch-"+ (sm.style || 1) ,
 							disabled: false,
-							hint: macro.name + (sm.hotkey ? (' (' + (sm.hotkey.ctrl ? 'Ctrl+' : '') + (sm.hotkey.alt ? 'Alt+' : '') + getCharFromCode(sm.hotkey.key) + ')') : ''),
+							hint: macro.name + (sm.hotkey && Object.keys(sm.hotkey).length > 0 ? (' (' + (sm.hotkey.ctrl ? 'Ctrl+' : '') + (sm.hotkey.alt ? 'Alt+' : '') + getCharFromCode(sm.hotkey.key) + ')') : ''),
 							caption: macro.name,
 							split: true,
 							menu: m
