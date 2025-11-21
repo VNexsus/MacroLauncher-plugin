@@ -37,6 +37,10 @@ body {
     margin-left: 10px;
 }
 
+#select {
+	height: 22px!important;
+}
+
 .select2-results {
 	max-height: 84px;
     overflow: auto;

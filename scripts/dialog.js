@@ -19,7 +19,7 @@
 (function(window, undefined){
 	
 	var baseurl = document.location.protocol == 'file:' ? 'file:///' + document.location.pathname.substring(0, document.location.pathname.lastIndexOf("/")).substring(1) + '/' : document.location.href.substring(0, document.location.href.lastIndexOf("/")+1);
-	var documentFilePath = parent.AscDesktopEditor.LocalFileGetSourcePath();
+	var documentFilePath = null; //parent.AscDesktopEditor.LocalFileGetSourcePath();
 	var storage = null;
 	var icon_style = 1;
 	var hot_key = {};
@@ -33,6 +33,12 @@
 		
 		var editor = parent.editor || parent.Asc.editor;
 		if(editor){
+			
+			if(parent.AscDesktopEditor && parent.AscDesktopEditor.LocalFileGetSourcePath)
+				documentFilePath = parent.AscDesktopEditor.LocalFileGetSourcePath();
+			else
+				documentFilePath = parent.Asc.editor.documentId;
+			
 			var macroText =  editor.pluginMethod_GetMacros();
 			storage = new MacroLauncherStorage(documentFilePath);
 			if(macroText){
@@ -43,7 +49,7 @@
 					macroArray.forEach( macro => {
 						$('#macroList').append($('<option value="'+ macro.guid +'">'+ macro.name +'</option>'));
 					});
-					$('.select2').select2({dropdownParent: $('#body'), maximumSelectionLength: 3});
+					$('.select2').select2({dropdownParent: $('#select'), maximumSelectionLength: 3});
 					for(var i = 1; i <= 43; i++) {
 						var icon = $('<span class="icon"></div>');
 						icon.attr('data-style', i);

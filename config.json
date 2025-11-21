@@ -2,10 +2,10 @@
     "name" : "Вызов макросов",
 	"nameLocale": {
 			"ru": "Вызов макросов",
-			"en": "Macro Launcer"
+			"en": "Macro Launcher"
 	},
     "guid" : "asc.{E5262E23-48E1-1D0C-073C-2AF8C610E1E0}",
-	"version": "3.0",
+	"version": "3.0.2",
     "variations" : [
         {
             "description" : "Панель для назначения вызова макросов",

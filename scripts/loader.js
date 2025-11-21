@@ -69,7 +69,10 @@
 				panel.append(`<style>`+ styles +`</style>`);
 			}
 			
-			documentFilePath = parent.AscDesktopEditor.LocalFileGetSourcePath();
+			if(parent.AscDesktopEditor && parent.AscDesktopEditor.LocalFileGetSourcePath)
+				documentFilePath = parent.AscDesktopEditor.LocalFileGetSourcePath();
+			else
+				documentFilePath = parent.Asc.editor.documentId;
 			if(storage)
 				delete storage;
 			storage = new MacroLauncherStorage(documentFilePath);
@@ -170,6 +173,12 @@
 				macroArray = macroJSON.macrosArray;
 				macroArray.find(macro => {
 					if(macro.guid == guid){
+						window.Asc.plugin.info.recalculate = true;
+						window.Asc.plugin.info.macrosGuid = macro.guid;
+						window.Asc.plugin.info.macrosName = macro.name;
+						if (macro && macro.signature) {
+							window.Asc.plugin.info.signature = macro.signature;
+						}
 						window.Asc.plugin.executeCommand("command", macro.value);
 						return true;
 					}
